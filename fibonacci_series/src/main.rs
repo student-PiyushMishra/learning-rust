@@ -11,7 +11,7 @@ fn fib(num: i32) -> i32 {
     if num == 1 {
         return second;
     }
-    for _i in 1..num {
+    for _i in 1..num - 2 {
         let temp = second;
         second = second + first;
         first = temp;
