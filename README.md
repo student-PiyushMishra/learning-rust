@@ -1,2 +1,2 @@
 ## My Rust journey...
- 
+..commit form new Arch device 
