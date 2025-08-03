@@ -1,51 +1,35 @@
-use rand::Rng;
+use colored::Colorize;
 use std::cmp::Ordering;
-use std::io;
+use rand;
 
 fn main() {
-    println!("\n\nGuess the number!");
-
-    let secret = rand::rng().random_range(1..=100);
-
-    let mut times_left = 15;
-
-    loop {
-        if times_left == 0 {
-            println!("\nOut of times! You lost, the correct guess was {}.",secret);
+    println!("{}","Welcome to The Guessing Game!!!".bold().cyan());
+    let secret_number:u32 = rand::random_range(1..=100);
+    let mut points_left:u8 = 15;
+    loop{
+        if points_left == 0 {
+            println!("\n\nOut of points...");
             break;
         }
-        println!("Please enter your guess:-");
-
-        let mut guess = String::new();
-        io::stdin()
+        println!("\n\n{}: {}","Points Left".yellow(),points_left);
+        println!("Enter your guess: ");
+        let mut guess:String = String::new();
+        std::io::stdin()
             .read_line(&mut guess)
-            .expect("Failed to read line...");
-
-        times_left = times_left - 1;
-
+            .expect("Error while reading the user input...");
         let guess: u32 = match guess.trim().parse(){
             Ok(num) => num,
             Err(_) => {
-                println!("Invalid input!");
+                println!("Invalid Input");
                 continue;
-            },
+            }
         };
-
-        println!("Your guess is: {}", guess);
-
-        match guess.cmp(&secret) {
-            Ordering::Less => {
-                println!("Too small!");
-            },
-            Ordering::Equal => {
-                println!("\nCorrect Guess! WON with {} chances left.",times_left);
-                break;
-            },
-            Ordering::Greater => {
-                println!("Too big!");
-            },
-        };
-
-        println!("\nTimes left: {}",times_left);
-    }
+        match guess.cmp(&secret_number){
+            Ordering::Less => println!("{}","Too Small.".red()),
+            Ordering::Greater => println!("{}","Too Big.".red()),
+            Ordering::Equal =>{ println!("{}","\nCorrect Guess.\n\n\nYou Win  !!!".green().bold()); break;}
+            
+        }
+        points_left -= 1;
+   }
 }
